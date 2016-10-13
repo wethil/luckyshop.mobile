@@ -35,29 +35,6 @@ export const Router = createRouter(() => ({
 
 
 class luckyshop extends Component {
-  constructor(props) {
-   super(props);
-   this.state = {
-     num1: 0,
-     num2: 0,
-     num3: 0,
-     num4: 0,
-     num5: 0,
-     num6: 0,
-     num7: 0,
-     result:0,
-     branchListTab:0,
-     user:{},
-     userCredit:0,
-     promoCode:"no",
-     branches:[],
-     branchesButtons:[],
-     activeBranch:""
-   };
-
-
-
- }
 
 
 

@@ -1,0 +1,2 @@
+const photo = "https://dyn.web.whatsapp.com/pp?t=l&u=31643182368%40c.us&i=1474995021&ref=0%40rvOQFjo4R5yro78GQDV3Y4udZ0kWryFQIjqZGOOJXNJGmUHP3H%2FdVN9b&tok=0%40rwOfiXrgFP7veY2sAZyr9I4%2F%2FuEFJ2eydtbbQQDfgonoeKqJpyi5RqcSY7cp5KO299SBzQtcGnODhQ%3D%3D"
+export default photo

@@ -1,5 +1,5 @@
 # lucky2shop mobile
-Main idea is get 3 or more encountered number in 7 number by trying. Encountering will be awarded with discount from any clothes store. Mobile app will be connected with backend via ajax or websocked  
+Main idea is get 3 or more encountered number in 7 number by trying. Encountering will be awarded with discount from any clothes store. Mobile app will be connected with backend via ajax or websocket 
 
 ## Technology used
 

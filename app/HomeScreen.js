@@ -25,6 +25,7 @@ import {
   StackNavigation,
   withNavigation
 } from '@exponent/ex-navigation';
+import { SocialIcon } from 'react-native-elements'
 
 
 
@@ -219,7 +220,7 @@ let counts = {};
  <Container>
                  
                     <Content   theme={luckyshopTheme} > 
-          <Grid>
+ <Grid>
               
              
                 <Row style={styles.headRow} >
@@ -236,14 +237,14 @@ let counts = {};
                     <Animatable.Text ref="result" style={styles.result}> {this.state.result}  same </Animatable.Text> 
                 </Row>
               
-
-
                <Row style={styles.bottomRow}>
                 {credit}
                 {button}
                 </Row>
                 
           </Grid>
+
+
 
 
 
@@ -319,5 +320,3 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.35
   }
 });
-
-

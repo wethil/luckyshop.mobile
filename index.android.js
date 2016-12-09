@@ -15,7 +15,7 @@ import {
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Container, Header, Title, Content, Button,List, ListItem,Text} from 'native-base';
 import _ from 'lodash';
-
+import SplashScreen from 'react-native-splash-screen'
 import StoreMap from './StoreMap.js'
 import {
   createRouter,
@@ -36,7 +36,10 @@ export const Router = createRouter(() => ({
 
 class luckyshop extends Component {
 
-
+   componentDidMount() {
+         // do anything while splash screen keeps, use await to wait for an async task.
+        SplashScreen.hide();
+    }
 
 
 

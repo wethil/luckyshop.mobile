@@ -44,12 +44,12 @@ export const styles = StyleSheet.create({
   pinkLine:{
     marginTop:10,
     backgroundColor:'rgba(242, 126, 188, 0.76)',
-    height:25
+    height:20
   },
   blueLine:{
     backgroundColor:'rgba(153, 211, 240, 0.82)',
-    height:25,
-    marginBottom:10
+    height:20,
+    marginBottom:30
   },
   columns:{
     borderColor:'red',

@@ -6,6 +6,7 @@ import luckyshopTheme from '../Themes/luckyshopTheme.js'
 import {
   StyleSheet,
   View,
+  Image,
   Text,
   Dimensions
 } from 'react-native';
@@ -29,13 +30,13 @@ constructor(props) {
   super(props);
 
   this.state = {
-  	branchList:[]
+    branchList:[]
   };
 }
 
 componentWillMount(){
-	
-	this._getBranches()
+  
+  this._getBranches()
 }
 
 _getBranches () {
@@ -100,25 +101,116 @@ setBranch() {
 
 
   render() {
-  	  var userLoc = this.props.userLoc
-  	  if (this.state.branchList.length!=0 && this.props.userLoc.id) {
-  	  var chooseText = <Text  ref="result" style={styles.choose}>Choose a branch and get your clothes!</Text>
+      var userLoc = this.props.userLoc
+      if (this.state.branchList.length!=0 && this.props.userLoc.id) {
+      var chooseText = <Text  style={styles.choose}>Choose a branch and get your clothes!</Text>
     } else {
      var chooseText = <Text style={styles.chooseWait}>Waiting for branches..</Text>
-	   }
+     }
+     const {branchList} = this.state
     return (
       <Container>
-      	 <Content   theme={luckyshopTheme}>
-      	 	<Grid> 
-      	 		<Row style={styles.avatar}> 
-      	 			   <Thumbnail  size={140} source={require('../img/pp.jpg')} />
-      	 		</Row>
-      	 		<Row style={styles.congRow}> 
-      	 			<Animatable.Text animation="tada" iterationCount="infinite" style={styles.congText}>Congratulations!</Animatable.Text>
-      	 			{chooseText}
-      	 		</Row>
-      	 		<Row style={styles.Stores}> 
-      	 	  {this.state.branchList.length!=0 && this.props.userLoc.id ? 
+         <Content   theme={luckyshopTheme}>
+          <Grid> 
+           <Image  resizeMode='stretch' style={styles.headRow} source={require('../img/avatarFrame.png')}>
+              <Thumbnail style={styles.pp}  size={165} source={require('../img/pp.jpg')} />
+          </Image>
+            <Row style={styles.congRow}> 
+              <Text style={styles.congText}>Congratulations!</Text>
+            </Row>
+            <Row style={styles.chosingStat}>
+              {chooseText}
+            </Row>
+            <Row style={styles.Stores}> 
+            {branchList.length!=0 && this.props.userLoc.id ? 
+                   branchList.map((branch)=>{
+                    return (<Image resizeMode='stretch' style={styles.greenApple} source={require('../img/greenApple.png')}>
+                             <Col  style={styles.storeInf}>
+                               <Icon style={{color:'white'}} name='map-marker' size={20} />
+                               <Text style={styles.storeInfText} >  {branch.name}</Text> 
+                               <Text style={styles.storeInfText} > {branch.discount}% discount </Text> 
+                               <Text style={styles.storeInfText} >  {Math.round(GreatCircle.distance(userLoc.latlng.latitude, userLoc.latlng.longitude, branch.latlng.latitude, branch.latlng.longitude)* 10)/ 10} km    </Text> 
+                             </Col>
+                           </Image>)
+          }) : <Spinner color='red' /> }
+            </Row>
+          </Grid>
+         </Content>
+      </Container>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  headRow: {
+    flexDirection: 'column', 
+    justifyContent: 'center',
+    alignItems:'center',
+    alignSelf:'center',
+    height: 220
+  },
+  pp:{
+    marginTop:-20,
+    marginLeft:-5
+  },
+  image:{
+     width: windowWidth * 0.70,
+    height: windowHeight * 0.35
+  },
+  storeInf:{
+   justifyContent:'center',
+    //left:18,
+     alignItems:'center'
+    //top:53,
+  },
+  storeInfText:{
+    color:'white',
+    fontSize:14,
+    fontWeight: 'bold'
+  },
+  congRow:{
+    marginTop:10,
+   height: windowHeight * 0.10,
+    flexDirection: 'column', 
+    justifyContent: 'space-around',
+    alignItems:'center',
+    backgroundColor:'rgba(242, 126, 188, 0.76)',
+
+  },
+   greenApple:{
+    width:100,
+    height:150
+  },
+  chosingStat:{
+     justifyContent: 'center',
+     alignItems:'center',
+  },
+  congText:{
+    fontFamily:'lobster_regular',
+     fontSize: 50,
+     color:'white'
+  },
+  choose:{
+    alignSelf:'center',
+     fontSize: 12
+  },
+  chooseWait:{
+    alignSelf:'center',
+     fontSize: 12,
+     marginTop:10
+  },
+  Stores:{
+    justifyContent: 'center',
+    width: windowWidth,
+    height :windowHeight * 0.30,
+  } 
+});
+
+
+export default WinnerScreen;
+
+/*
+      {branchList.length!=0 && this.props.userLoc.id ? 
                  <List dataArray={this.state.branchList}
                         renderRow={(branch) =>
                            <ListItem iconRight button onPress={this._goToMaps.bind(this,branch)} >
@@ -136,49 +228,17 @@ setBranch() {
                             </ListItem>
                         }>
                     </List> : <Spinner color='red' /> 
-                    }  
-      	 		</Row>
-      	 	</Grid>
-      	 </Content>
-      </Container>
-    );
-  }
-}
+                    }  */
 
-const styles = StyleSheet.create({
-	avatar:{
-		marginTop:10,
-		justifyContent: 'center',
-		height : windowHeight * 0.30,
-	},
-	congRow:{
-	 height: windowHeight * 0.30,
-    flexDirection: 'column', 
-    justifyContent: 'space-around',
-    alignItems:'center'
-
-	},
-	congText:{
-	  fontFamily:'lobster_regular',
-	  alignSelf:'center',
-	   fontSize: 50,
-	   color:'rgb(255,23,68)'
-	},
-	choose:{
-		alignSelf:'center',
-	   fontSize: 12
-	},
-	chooseWait:{
-		alignSelf:'center',
-	   fontSize: 10,
-	   marginTop:10
-	},
-	Stores:{
-		justifyContent: 'center',
-		width: windowWidth,
-		height :windowHeight * 0.30,
-	}	
-});
-
-
-export default WinnerScreen;
+                    /*
+{branchList.length!=0 && this.props.userLoc.id ? 
+         branchList.map((branch)=>{
+          return (<Image resizeMode='stretch' style={styles.greenApple} source={require('../img/greenApple.png')}>
+                   <Col  style={styles.storeInf}>
+                     <Icon style={{color:'white'}} name='map-marker' size={20} />
+                     <Text style={styles.storeInfText} >  {branch.name}</Text> 
+                     <Text style={styles.storeInfText} > {branch.discount}% discount </Text> 
+                     <Text style={styles.storeInfText} >  {Math.round(GreatCircle.distance(userLoc.latlng.latitude, userLoc.latlng.longitude, branch.latlng.latitude, branch.latlng.longitude)* 10)/ 10} km    </Text> 
+                   </Col>
+                 </Image>)
+}) : <Spinner color='red' /> }  */

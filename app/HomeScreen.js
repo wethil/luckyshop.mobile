@@ -59,6 +59,7 @@ componentDidMount(){
 }
 
    componentWillMount() {
+     /*
       navigator.geolocation.getCurrentPosition(
       (position) => {
        var initialPosition = JSON.stringify(position);
@@ -82,7 +83,7 @@ componentDidMount(){
    
     });
 
-   /*
+  
    fetch(url + '/api/user/hilal')
      .then((response) => response.json())
      .then((responseJson) => {
@@ -233,8 +234,8 @@ changeNumToFruit(numbers) {
 
    var result = this.state.result
    var button = this.state.slotting == false && this.state.userCredit>0
-    ?   <Button block danger  onPress={this._shake.bind(this)}> Shake It ! </Button>           
-      : <Button block disabled > 
+    ?   <Button block large danger  onPress={this._shake.bind(this)}> Shake It ! </Button>           
+      : <Button block large disabled > 
           <Icon style={{color:"white"}} name='spinner' size={20} /> Wait.. 
         </Button>
     
@@ -273,6 +274,7 @@ changeNumToFruit(numbers) {
    
     <Modal style={styles.modal}
       ref={"modal1"}
+     // isOpen={true}
       animationDuration={360}
       swipeToClose={true}
       backButtonClose={true}

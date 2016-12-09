@@ -230,13 +230,10 @@ changeNumToFruit(numbers) {
     var credit = this.state.userCredit>0 ? <Text style= {styles.creditText} > {this.state.userCredit}  Credit </Text>  
     :
     <Text onPress={()=> this.setState({userCredit:5})} style= {styles.creditText} > Add  Credit </Text> 
-  
-    var result = this.state.result
+
+   var result = this.state.result
    var button = this.state.slotting == false && this.state.userCredit>0
-    ?
-    
-      <Button block danger  onPress={this._shake.bind(this)}> Shake It ! </Button>
-                   
+    ?   <Button block danger  onPress={this._shake.bind(this)}> Shake It ! </Button>           
       : <Button block disabled > 
           <Icon style={{color:"white"}} name='spinner' size={20} /> Wait.. 
         </Button>
@@ -244,66 +241,47 @@ changeNumToFruit(numbers) {
 
 
       return (
-            
- <Container >
-                 
-                    <Content padder   theme={luckyshopTheme} > 
- <Grid>
-              
-             
-        <Row style={styles.headRow} >
-            <Image
-                resizeMode='stretch'
-                style={styles.image}
-                source={require('../img/main.png')}
-              />
-        </Row>
-
-          <Row style={styles.pinkLine}></Row>
-          <Row style={styles.numbersRow}>
-          {
-            this.state.fruits.map((fruit,index)=>{
-              return  <Col key={index} style={styles.columns}><Text><Animatable.Image ref="nums" key={fruit} style={styles.fruits} source={fruit} /></Text></Col>
-            })
-          }
-
-        </Row>
-        <Row style={styles.result}>
-           <Image  resizeMode='stretch' style={styles.yellowA} source={yellowA}>
-             <Animatable.Text style={styles.resText} ref="result"> {this.state.result}  same </Animatable.Text> 
-           </Image>
-           <Image  resizeMode='stretch' style={styles.purpleA} source={purpleA}>
-             <Animatable.Text style={styles.creditText} ref="result"> {credit} </Animatable.Text> 
-           </Image>
-          
-        </Row>
-        <Row style={styles.blueLine}></Row>
-      
-  
-      
-        {button}
+<Container >
+  <Content padder   theme={luckyshopTheme} > 
+    <Grid>
+      <Row style={styles.headRow} >
+        <Image
+        resizeMode='stretch'
+        style={styles.image}
+        source={require('../img/main.png')}
+        />
+      </Row>
+      <Row style={styles.pinkLine}></Row>
+      <Row style={styles.numbersRow}>
+        {
+          this.state.fruits.map((fruit,index)=>{
+          return  <Col key={index} style={styles.columns}><Text><Animatable.Image ref="nums" key={fruit} style={styles.fruits} source={fruit} /></Text></Col>
+                   })
+        }
+      </Row>
+      <Row style={styles.result}>
+        <Image  resizeMode='stretch' style={styles.yellowA} source={yellowA}>
+          <Animatable.Text style={styles.resText} ref="result"> {this.state.result}  same </Animatable.Text> 
+        </Image>
+        <Image  resizeMode='stretch' style={styles.purpleA} source={purpleA}>
+         <Animatable.Text style={styles.creditText} ref="result"> {credit} </Animatable.Text> 
+        </Image>
+      </Row>
+      <Row style={styles.blueLine}></Row>
+      {button}
+    </Grid>
    
-        
-  </Grid>
-
-
-
-
-
-        <Modal style={styles.modal}
-        ref={"modal1"}
-        animationDuration={360}
-        swipeToClose={true}
-        backButtonClose={true}
-        onClosed={()=>this._closeModal()}
-        >
-         
-          <WinnerScreen userLoc={this.state.userLoc} />
-         
-        </Modal>
-                  </Content>
- 
-              </Container>
+    <Modal style={styles.modal}
+      ref={"modal1"}
+      animationDuration={360}
+      swipeToClose={true}
+      backButtonClose={true}
+      onClosed={()=>this._closeModal()}
+      >
+       <WinnerScreen userLoc={this.state.userLoc} />
+    </Modal>
+  </Content>
+</Container>
     );
   }
 }

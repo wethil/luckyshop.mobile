@@ -7,6 +7,27 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 
+
+
+const x = Dimensions.get('window').width;
+const y = Dimensions.get('window').height;
+
+// Calculating ratio from iPhone breakpoints
+const ratioX = x < 375 ? (x < 320 ? 0.75 : 0.875) : 1 ;
+const ratioY = y < 568 ? (y < 480 ? 0.75 : 0.875) : 1 ;
+
+// We set our base font size value
+const base_unit = 16;
+
+// We're simulating EM by changing font size according to Ratio
+const unit = base_unit * ratioX;
+
+// We add an em() shortcut function 
+function em(value) {
+  return unit * value;
+}
+
+
 export const styles = StyleSheet.create({
   button: {
     height:60
@@ -24,7 +45,7 @@ export const styles = StyleSheet.create({
   },
   purpleA:{
     marginTop:-13,
-    width:100,
+    width:(x - em(0.02)*2)  * (2/7),
     height:50
   },
    resText:{
@@ -35,10 +56,10 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   creditText:{
-    left:18,
+    left:16,
     top:13,
     color:'white',
-    fontSize:16,
+    fontSize:em(1),
     fontWeight: 'bold'
   },
   pinkLine:{
@@ -58,16 +79,16 @@ export const styles = StyleSheet.create({
     flexGrow:0,
      alignItems:'center',
     flexShrink:1,
-    flexBasis:60,
+    flexBasis:75,
     height: 45
   },
   fruits:{
-    width:35,
+    width:(x - em(0.02)*2)  * (1/10),
     height:35
   },
 
   numbersRow: {
-    height: windowHeight * 0.15,
+    height: 80,
     flexDirection: 'row', 
     justifyContent: 'space-around',
     alignItems:'center'
@@ -83,8 +104,9 @@ export const styles = StyleSheet.create({
     alignSelf:"center"
   },
   modal: {
-    justifyContent: 'center',
-    alignItems: 'center'
+   // justifyContent: 'center',
+    //alignItems: 'center'
+    zIndex:20
   },
   image:{
      width: windowWidth * 0.70,

@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react';
 import { Col, Row, Grid } from "react-native-easy-grid";
-import { Container, Header, Title, Content, Spinner, Button,Icon,Thumbnail} from 'native-base';
+import { Container, Header, Title, Content, Spinner, Icon,Thumbnail} from 'native-base';
+import { Button } from 'react-native-elements'
 import ActionButton from 'react-native-action-button';
 import luckyshopTheme from '../Themes/luckyshopTheme.js'
 import * as Animatable from 'react-native-animatable';
@@ -37,10 +38,15 @@ class HomeScreen extends Component {
      this.backPress = this.backPress.bind(this);
     this.state = {
      user:{},
-     userLoc:{},
-     openModal:false,
-     userCredit:3,
-     fruits:[apple,apple,apple,apple,apple,apple,apple],
+     userLoc:{
+      id:99,
+      latlng:{
+        latitude:35,
+        longitude:35
+    }},
+   openModal:false,
+   userCredit:3,
+   fruits:[apple,apple,apple,apple,apple,apple,apple],
    result:0,
    buttonState:0, // 0 is try again, 1 is lucky state, 2 is add credit
    promoCode:0,
@@ -59,31 +65,47 @@ componentDidMount(){
 }
 
    componentWillMount() {
-     /*
-      navigator.geolocation.getCurrentPosition(
-      (position) => {
-       var initialPosition = JSON.stringify(position);
-        this.setState({initialPosition});
-      },
-      (error) => console.log('error with geolocation'),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      let coords = position.coords;
-      this.setState(
+    this.getLoc()
+    async function requestCameraPermission() {
+  try {
+    const granted = await PermissionsAndroid.requestPermission(
+      PermissionsAndroid.ACCESS_FINE_LOCATION,
+      {
+        'title': 'Lucy2Shop location',
+        'message': 'Lucky2Shop needs access to your location, ' +
+                   'so we can suggest you nearest shops.'
+      }
+    )
+    if (granted) {
+     this.getLoc()
+    } else {
+    this.setState(
       {
         userLoc:{
           id:99,
           latlng:{
-                  latitude:coords.latitude,
-                  longitude:coords.longitude
+                  latitude:30,
+                  longitude:30
                  }
         }
       })
-   
-    });
+    }
+  } catch (err) {
+    console.warn(err)
+  }
 
-  
+
+
+ if (!this.state.accesLoc){
+    requestCameraPermission()
+  }
+
+
+}
+     
+
+
+  /*
    fetch(url + '/api/user/hilal')
      .then((response) => response.json())
      .then((responseJson) => {
@@ -105,6 +127,35 @@ componentDidMount(){
     }
      return false;
  }
+
+ getLoc(){    
+  
+         navigator.geolocation.getCurrentPosition(
+            (position) => {
+            let coords = position.coords;
+            this.changeLoc(coords)
+            },
+            (error) => console.log('error with geolocation'),
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+          );
+         this.watchID = navigator.geolocation.watchPosition((position) => {
+           let coords = position.coords;
+            this.changeLoc(coords)
+          });
+     
+  }
+
+changeLoc(coords){
+      this.setState(
+          {
+            userLoc:{
+            id:99,
+            latlng:{
+              latitude:coords.latitude,
+              longitude:coords.longitude
+            }}}
+          )
+}
 
  componentWillUnmount(){
   //BackAndroid.removeEventListener('hardwareBackPress', this.backPress);
@@ -228,16 +279,19 @@ changeNumToFruit(numbers) {
 
   render() {
 
-    var credit = this.state.userCredit>0 ? <Text style= {styles.creditText} > {this.state.userCredit}  Credit </Text>  
+
+    var credit = this.state.userCredit>0 ? <Text style= {styles.creditText}>{this.state.userCredit} Credit </Text>  
     :
-    <Text onPress={()=> this.setState({userCredit:5})} style= {styles.creditText} > Add  Credit </Text> 
+    <Text onPress={()=> this.setState({userCredit:5})} style= {styles.creditText}>Add Credit </Text> 
 
    var result = this.state.result
    var button = this.state.slotting == false && this.state.userCredit>0
-    ?   <Button block large danger  onPress={this._shake.bind(this)}> Shake It ! </Button>           
-      : <Button block large disabled > 
-          <Icon style={{color:"white"}} name='spinner' size={20} /> Wait.. 
-        </Button>
+    ?    <Button
+          onPress={this._shake.bind(this)}
+          backgroundColor="#2096f3"
+          title='Shake It!' />         
+      :  <Button
+          title='Wait..' />
     
 
 
@@ -262,25 +316,27 @@ changeNumToFruit(numbers) {
       </Row>
       <Row style={styles.result}>
         <Image  resizeMode='stretch' style={styles.yellowA} source={yellowA}>
-          <Animatable.Text style={styles.resText} ref="result"> {this.state.result}  same </Animatable.Text> 
+          <Animatable.Text style={styles.resText} ref="result"> {this.state.result} same </Animatable.Text> 
         </Image>
         <Image  resizeMode='stretch' style={styles.purpleA} source={purpleA}>
          <Animatable.Text style={styles.creditText} ref="result"> {credit} </Animatable.Text> 
         </Image>
       </Row>
       <Row style={styles.blueLine}></Row>
+       
       {button}
+     
     </Grid>
    
-    <Modal style={styles.modal}
+    <Modal 
       ref={"modal1"}
-     // isOpen={true}
+      //isOpen={true}
       animationDuration={360}
       swipeToClose={true}
       backButtonClose={true}
       onClosed={()=>this._closeModal()}
       >
-       <WinnerScreen userLoc={this.state.userLoc} />
+       <WinnerScreen style={styles.modal} userLoc={this.state.userLoc} />
     </Modal>
   </Content>
 </Container>

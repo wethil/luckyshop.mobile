@@ -22,8 +22,29 @@ import {
   withNavigation
 } from '@exponent/ex-navigation';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+
+const branchList=[{
+            name : 'Store A',
+            discount:15,
+            id:1,
+           latlng:{
+                    latitude:51.403175,
+                    longitude: 5.415579
+                  }
+          },
+          {
+            name : 'Store B',
+            discount:13,
+            id:1,
+           latlng:{
+                    latitude:51.411387,
+                    longitude:5.425364
+                  }
+          }]
+
+
+
+
 @withNavigation
 class WinnerScreen extends Component {
 constructor(props) {
@@ -35,7 +56,7 @@ constructor(props) {
 }
 
 componentWillMount(){
-  
+  this.setBranch()
   this._getBranches()
 }
 
@@ -90,11 +111,12 @@ setBranch() {
 }
 
    _goToMaps (branch) {
-  this.setState({activeBranch:branch})
+ 
     //lincoln hal 39.481347, -88.177220
     //arts center 39.480266, -88.174900
     let store={id:branch.id,latlng:branch.latlng}
     let userLoc = this.props.userLoc
+
   this.props.navigator.push(Router.getRoute('storeMap',{markers:[userLoc,store]}));
 
  }
@@ -102,34 +124,35 @@ setBranch() {
 
   render() {
       var userLoc = this.props.userLoc
-      if (this.state.branchList.length!=0 && this.props.userLoc.id) {
+      if (branchList&& branchList.length!=0 ) {
       var chooseText = <Text  style={styles.choose}>Choose a branch and get your clothes!</Text>
     } else {
      var chooseText = <Text style={styles.chooseWait}>Waiting for branches..</Text>
      }
-     const {branchList} = this.state
+   
     return (
-      <Container>
-         <Content   theme={luckyshopTheme}>
-          <Grid> 
+     <Container>
+         <Content style={{ zIndex:91}} theme={luckyshopTheme}>
+          <Grid > 
            <Image  resizeMode='stretch' style={styles.headRow} source={require('../img/avatarFrame.png')}>
               <Thumbnail style={styles.pp}  size={165} source={require('../img/pp.jpg')} />
           </Image>
             <Row style={styles.congRow}> 
               <Text style={styles.congText}>Congratulations!</Text>
             </Row>
+             <Row style={styles.pinkLine}></Row>
             <Row style={styles.chosingStat}>
               {chooseText}
             </Row>
-            <Row style={styles.Stores}> 
-            {branchList.length!=0 && this.props.userLoc.id ? 
-                   branchList.map((branch)=>{
-                    return (<Image resizeMode='stretch' style={styles.greenApple} source={require('../img/greenApple.png')}>
+             <Row style={styles.Stores}> 
+            {branchList && branchList.length!=0 ? 
+                   branchList.map((branch,index)=>{
+                    return (<Image key={index}  resizeMode='stretch' style={styles.greenApple} source={require('../img/greenApple.png')}>
                              <Col  style={styles.storeInf}>
                                <Icon style={{color:'white'}} name='map-marker' size={20} />
-                               <Text style={styles.storeInfText} >  {branch.name}</Text> 
-                               <Text style={styles.storeInfText} > {branch.discount}% discount </Text> 
-                               <Text style={styles.storeInfText} >  {Math.round(GreatCircle.distance(userLoc.latlng.latitude, userLoc.latlng.longitude, branch.latlng.latitude, branch.latlng.longitude)* 10)/ 10} km    </Text> 
+                               <Text onPress={this._goToMaps.bind(this,branch)} style={styles.storeInfText} >  {branch.name}</Text> 
+                               <Text onPress={this._goToMaps.bind(this,branch)} style={styles.storeInfText} > {branch.discount}% discount </Text> 
+                               <Text onPress={this._goToMaps.bind(this,branch)} style={styles.storeInfText} >  {Math.round(GreatCircle.distance(userLoc.latlng.latitude, userLoc.latlng.longitude, branch.latlng.latitude, branch.latlng.longitude)* 10)/ 10} km    </Text> 
                              </Col>
                            </Image>)
           }) : <Spinner color='red' /> }
@@ -141,6 +164,27 @@ setBranch() {
   }
 }
 
+
+
+
+const x = Dimensions.get('window').width;
+const y = Dimensions.get('window').height;
+
+// Calculating ratio from iPhone breakpoints
+const ratioX = x < 375 ? (x < 320 ? 0.75 : 0.875) : 1 ;
+const ratioY = y < 568 ? (y < 480 ? 0.75 : 0.875) : 1 ;
+
+// We set our base font size value
+const base_unit = 16;
+
+// We're simulating EM by changing font size according to Ratio
+const unit = base_unit * ratioX;
+
+// We add an em() shortcut function 
+function em(value) {
+  return unit * value;
+} 
+
 const styles = StyleSheet.create({
   headRow: {
     flexDirection: 'column', 
@@ -149,13 +193,23 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     height: 220
   },
+    pinkLine:{
+    //marginTop:10,
+    backgroundColor:'rgba(242, 126, 188, 0.76)',
+    height:20
+  },
+    blueLine:{
+    backgroundColor:'rgba(153, 211, 240, 0.82)',
+    height:20,
+    marginBottom:30
+  },
   pp:{
     marginTop:-20,
     marginLeft:-5
   },
   image:{
-     width: windowWidth * 0.70,
-    height: windowHeight * 0.35
+     width: x * 0.70,
+    height: y * 0.35
   },
   storeInf:{
    justifyContent:'center',
@@ -165,30 +219,28 @@ const styles = StyleSheet.create({
   },
   storeInfText:{
     color:'white',
-    fontSize:14,
+    fontSize:em(0.7),
     fontWeight: 'bold'
   },
   congRow:{
     marginTop:10,
-   height: windowHeight * 0.10,
-    flexDirection: 'column', 
-    justifyContent: 'space-around',
+   justifyContent: 'space-around',
     alignItems:'center',
     backgroundColor:'rgba(242, 126, 188, 0.76)',
-
+  },
+    congText:{
+    fontFamily:'lobster_regular',
+     fontSize: 45,
+     alignSelf:'center',
+     color:'white'
   },
    greenApple:{
-    width:100,
+    width: (x - em(1.25) * 2) *(2/6),
     height:150
   },
   chosingStat:{
      justifyContent: 'center',
      alignItems:'center',
-  },
-  congText:{
-    fontFamily:'lobster_regular',
-     fontSize: 50,
-     color:'white'
   },
   choose:{
     alignSelf:'center',
@@ -201,8 +253,8 @@ const styles = StyleSheet.create({
   },
   Stores:{
     justifyContent: 'center',
-    width: windowWidth,
-    height :windowHeight * 0.30,
+    height :(x - em(1.25) * 2) * (3/5),
+
   } 
 });
 
@@ -231,14 +283,16 @@ export default WinnerScreen;
                     }  */
 
                     /*
-{branchList.length!=0 && this.props.userLoc.id ? 
-         branchList.map((branch)=>{
-          return (<Image resizeMode='stretch' style={styles.greenApple} source={require('../img/greenApple.png')}>
-                   <Col  style={styles.storeInf}>
-                     <Icon style={{color:'white'}} name='map-marker' size={20} />
-                     <Text style={styles.storeInfText} >  {branch.name}</Text> 
-                     <Text style={styles.storeInfText} > {branch.discount}% discount </Text> 
-                     <Text style={styles.storeInfText} >  {Math.round(GreatCircle.distance(userLoc.latlng.latitude, userLoc.latlng.longitude, branch.latlng.latitude, branch.latlng.longitude)* 10)/ 10} km    </Text> 
-                   </Col>
-                 </Image>)
-}) : <Spinner color='red' /> }  */
+           <Row style={styles.Stores}> 
+            {branchList && branchList.length!=0 ? 
+                   branchList.map((branch,index)=>{
+                    return (<Image key={index}  resizeMode='stretch' style={styles.greenApple} source={require('../img/greenApple.png')}>
+                             <Col  style={styles.storeInf}>
+                               <Icon style={{color:'white'}} name='map-marker' size={20} />
+                               <Text onPress={this._goToMaps.bind(this,branch)} style={styles.storeInfText} >  {branch.name}</Text> 
+                               <Text onPress={this._goToMaps.bind(this,branch)} style={styles.storeInfText} > {branch.discount}% discount </Text> 
+                               <Text onPress={this._goToMaps.bind(this,branch)} style={styles.storeInfText} >  {Math.round(GreatCircle.distance(userLoc.latlng.latitude, userLoc.latlng.longitude, branch.latlng.latitude, branch.latlng.longitude)* 10)/ 10} km    </Text> 
+                             </Col>
+                           </Image>)
+          }) : <Spinner color='red' /> }
+            </Row> */

@@ -50,7 +50,8 @@ class HomeScreen extends Component {
    result:0,
    buttonState:0, // 0 is try again, 1 is lucky state, 2 is add credit
    promoCode:0,
-   slotting:false
+   slotting:false,
+   winDecideModal:false
 
     };
   }
@@ -180,7 +181,7 @@ let counts = {};
   this.changeNumToFruit(numbers)
   this.setState({result:result})
   this.refs.result.bounceIn(800)
-      if (result>=3) {
+      if (result>=1) {
             this.refs.modal1.open();
       }
       if(numbers.length!=0){
@@ -188,6 +189,15 @@ let counts = {};
       }
 
   })
+}
+
+goWinnerPage(){
+   this.setState({winDecideModal:false})
+  this.refs.modal1.open();
+}
+
+continueToPlay(){
+  this.setState({winDecideModal:false})
 }
 
 changeNumToFruit(numbers) {
@@ -270,7 +280,7 @@ changeNumToFruit(numbers) {
   _closeModal(){
     this.setState({openModal:false})
     this.setState({
-      result:0,
+     winDecideModal:true,
       fruits:[apple,apple,apple,apple,apple,apple,apple]
     })
   }
@@ -336,7 +346,26 @@ changeNumToFruit(numbers) {
       backButtonClose={true}
       onClosed={()=>this._closeModal()}
       >
-       <WinnerScreen style={styles.modal} userLoc={this.state.userLoc} />
+       <WinnerScreen result={this.state.result} style={styles.modal} userLoc={this.state.userLoc} />
+    </Modal>
+   
+
+    <Modal 
+      isOpen={this.state.winDecideModal}
+      backdrop={true}
+      //isOpen={true}
+      style={styles.winDecideModal}
+      position="bottom"
+      animationDuration={360}
+      backButtonClose={true}
+      //onClosed={()=>this._closeModal()}
+      >
+     
+     
+              <Button borderRadius={2} backgroundColor="#3F51B5" title='Go to winner Page' onPress={this.goWinnerPage.bind(this)} />
+              <Button borderRadius={2} backgroundColor="#FF5722"   title='Continue To Play'onPress={this.continueToPlay.bind(this)}/>
+       
+      
     </Modal>
   </Content>
 </Container>
@@ -348,12 +377,3 @@ changeNumToFruit(numbers) {
 export default HomeScreen;
 
 
-
-
-
-
-
-/*
-  
-                    <Animatable.Text ref="nums" style={styles.numbers}>  {this.state.numbers} </Animatable.Text> 
-                    <Animatable.Text ref="result" style={styles.result}> {this.state.result}  same </Animatable.Text> */

@@ -139,6 +139,7 @@ setBranch() {
           </Image>
             <Row style={styles.congRow}> 
               <Text style={styles.congText}>Congratulations!</Text>
+              <Text style={styles.resText}>You won with {this.props.result} crush! </Text>
             </Row>
              <Row style={styles.pinkLine}></Row>
             <Row style={styles.chosingStat}>
@@ -224,6 +225,7 @@ const styles = StyleSheet.create({
   },
   congRow:{
     marginTop:10,
+    flexDirection: 'column', 
    justifyContent: 'space-around',
     alignItems:'center',
     backgroundColor:'rgba(242, 126, 188, 0.76)',
@@ -231,6 +233,12 @@ const styles = StyleSheet.create({
     congText:{
     fontFamily:'lobster_regular',
      fontSize: 45,
+     alignSelf:'center',
+     color:'white'
+  },
+   resText:{
+    fontFamily:'lobster_regular',
+     fontSize: 14,
      alignSelf:'center',
      color:'white'
   },

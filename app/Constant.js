@@ -94,6 +94,12 @@ export const styles = StyleSheet.create({
     alignItems:'center'
    
   },
+  winDecideModal:{
+    justifyContent: 'space-around',
+    //alignItems:'center',
+    height:100,
+    width:300
+  },
  result: {
    alignSelf:'center',
   flexDirection: 'column',
